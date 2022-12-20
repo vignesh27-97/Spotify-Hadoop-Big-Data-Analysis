@@ -33,3 +33,12 @@
 4. Top ranked title in the United States on 1st June 2021
 5. Getting URL of the “Shape of You” music title for United States region
 
+
+### HIVE ANALYSIS
+1. Count of top 200 music titles based on the streaming regions
+2. Count of viral music hits based on the streaming regions
+3. Top 10 streaming countries based on streams
+4. Top 20 global music artists based on streams
+5. Distinct count values of Regions, Artists, and Titles
+6. Top 5 regions with high average streaming numbers
+7. Total streaming numbers based for every year (2017-2021)
