@@ -2,7 +2,7 @@
 
 •	Configured Hadoop ecosystem and executed multiple MapReduce programs in Java for data extraction, transformation and aggregation
 
-•	Developed Pig Latin scripts for analyzing the top performing artists based on streaming regions and stored into HDFS
+•	Developed Pig Latin scripts for analyzing the top performing artists based on streaming regions and stored the output results into HDFS
 
 •	Executed Ad-hoc queries for analyzing the Spotify data using Hive
 
