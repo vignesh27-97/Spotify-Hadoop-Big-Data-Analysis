@@ -1,0 +1,100 @@
+
+----------------------------------------------------------------------------------------------------
+
+HIVE ANALYSIS
+
+-----------------------------------------------------------------------------------------------------
+
+CREATE DATABASE spotify;
+SHOW DATABASES;
+USE spotify;
+
+CREATE TABLE IF NOT EXISTS spotify.charts (
+ title string,
+ rank int,
+ chartdate date,
+ artist string,
+ url string,
+ region string,
+ chart string,
+ trend string,
+ streams int)
+ ROW FORMAT DELIMITED
+ FIELDS TERMINATED BY ‘,’;
+
+LOAD DATA INPATH ‘Project/spotify.csv’ INTO TABLE spotify.charts;
+
+SHOW TABLES;
+
+DESCRIBE spotify.charts;
+
+
+1. Count of top 200 music titles based on the streaming regions 
+
+INSERT OVERWRITE DIRECTORY '/HiveAnalysis/Top200CountsByRegion'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+SELECT region, count(title) FROM charts where chart = 'top200' GROUP BY region ORDER BY region;
+
+
+2. Count of viral music hits based on the streaming regions 
+
+INSERT OVERWRITE DIRECTORY '/HiveAnalysis/ViralCountsByRegion'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+SELECT region, count(title) FROM charts where chart = 'viral50' GROUP BY region ORDER BY region;
+
+
+3. Top 10 streaming countries based on streams 
+
+INSERT OVERWRITE DIRECTORY '/HiveAnalysis/Top10StreamingRegions'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+SELECT region, sum(streams) as total FROM charts GROUP BY region ORDER BY total DESC LIMIT 10;
+
+
+4. Top 20 global music artists based on streams 
+
+
+INSERT OVERWRITE DIRECTORY '/HiveAnalysis/Top20GlobalArtists' 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+SELECT artist FROM (select artist, sum(streams) AS total FROM charts GROUP BY artist) temp ORDER BY temp.total DESC LIMIT 20; 
+
+
+5. Distinct count values of Regions, Artists, and Titles 
+
+INSERT OVERWRITE DIRECTORY '/HiveAnalysis/CountOfRegionsArtistsTitles'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+SELECT count(distinct region) AS TotalRegions, count(distinct artist) AS TotalArtists, count(distinct title) AS TotalMusicTitles FROM charts;
+
+
+6. Top 5 regions with high average streaming numbers
+
+INSERT OVERWRITE DIRECTORY '/HiveAnalysis/Top5HighAvgStreamRegions'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+SELECT region, round(avg(streams),2) AS total FROM charts GROUP BY region ORDER BY total DESC LIMIT 5;
+
+
+7. Total streaming numbers based for every year (2017-2021)
+
+INSERT OVERWRITE DIRECTORY '/HiveAnalysis/TotalStreamsEveryYear' 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+SELECT date_format(chartdate,'yyyy'), sum(streams) FROM charts GROUP BY date_format(chartdate,'yyyy') ORDER BY date_format(chartdate,'yyyy');
+
+
+--------------------------------------------------------------------------------------------------
+
+
+
+
