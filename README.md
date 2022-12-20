@@ -1,6 +1,6 @@
 # Spotify-Hadoop-Big-Data-Analysis
 
-•	Configured Hadoop ecosystem and executed multiple MapReduce programs in Java for data extraction and aggregation
+•	Configured Hadoop ecosystem and executed multiple MapReduce programs in Java for data extraction, transformation and aggregation
 
 •	Developed Pig Latin scripts for analyzing the top performing artists based on streaming regions and stored into HDFS
 
@@ -11,7 +11,8 @@
 
 # Analysis Report:
 
-•	MAP REDUCE ANALYSIS
+### MAP REDUCE ANALYSIS
+
 1. Top performing Music titles on different streaming regions
 2. Total count of TOP200 music categories on the different streaming regions
 3. Total count of the VIRAL music categories based on streaming regions
@@ -23,4 +24,12 @@
 9. Average streaming numbers for every region
 10. Distinct Spotify Artists in the top chart list
 11. Sum of total streaming numbers for every region
+
+
+### PIG ANALYSIS
+1. Distinct trend patterns among the music titles
+2. Finding count of trend patterns based on the streaming regions
+3. Total number of artists in every streaming region
+4. Top ranked title in the United States on 1st June 2021
+5. Getting URL of the “Shape of You” music title for United States region
 
