@@ -1,4 +1,4 @@
-# Spotify-Hadoop-Big-Data-Analysis
+# Spotify Hadoop Big Data Analysis
 
 •	Configured Hadoop ecosystem and executed multiple MapReduce programs in Java for data extraction, transformation and aggregation
 
