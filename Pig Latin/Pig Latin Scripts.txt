@@ -1,0 +1,60 @@
+
+-------------------------------------------------------------------------------------
+
+PIG ANALYSIS
+
+-------------------------------------------------------------------------------------
+
+spotify_charts = LOAD '/Project/spotify.csv' USING PigStorage(',') AS (title:chararray, rank:int, date:chararray, artist:chararray, url:chararray, region:chararray, chart:chararray, trend:chararray, streams:int);
+
+
+1. Distinct trend patterns among the music titles
+
+title_trends = FOREACH spotify_charts GENERATE trend;
+distinct_trends = DISTINCT title_trends;
+DUMP distinct_trends;
+STORE distinct_trends into '/PigAnalysis/DistinctTrendPatterns'; 
+
+
+2. Finding trend patterns based on the streaming regions 
+
+trend_region = FOREACH spotify_charts GENERATE region, trend;
+group_trend_region = GROUP trend_region BY (region, trend);
+DESCRIBE group_trend_region;
+order_trend_region = ORDER group_trend_region BY group;
+ILLUSTRATE order_trend_region;
+trend_count_region = FOREACH order_trend_region GENERATE group, COUNT(trend_region) as TrendPatternCounts;
+DUMP trend_count_region;
+STORE trend_count_region into ‘/PigAnalysis/TrendRegionCount’; 
+
+
+3. Total number of artists by region
+
+artist_region = FOREACH spotify_charts GENERATE artist, region;
+group_artist_region = GROUP artist_region BY region;
+DESCRIBE group_artist_region;
+artist_count_region = FOREACH group_artist_region GENERATE group, COUNT(artist_region) as TotalArtists; 
+artist_count_region_order = ORDER artist_count_region BY TotalArtists DESC;
+ILLUSTRATE artist_count_region_order;
+DUMP artist_count_region_order;
+STORE artist_count_region_order into '/PigAnalysis/ArtistRegionCount'; 
+
+
+4. Top ranked title in the United States on 1st June 2021 
+
+title_filter = FILTER spotify_charts BY region == 'United States' AND date == '2021-06-01' and rank == 1;
+DESCRIBE title_filter;
+chart_title = FOREACH title_filter GENERATE title;
+DUMP chart_title;
+STORE chart_title into '/PigAnalysis/ChartTitle'; 
+
+
+5. Getting URL of the Shape of You music title for United States region 
+
+song_filter = FILTER spotify_charts BY region == 'United States' AND title == 'Shape of You';
+DESCRIBE song_filter;
+song_url = FOREACH song_filter GENERATE url;
+url_shapeofyou = DISTINCT song_url;
+DUMP url_shapeofyou;
+STORE url_shapeofyou into '/PigAnalysis/ShapeOfYouURL'; 
+
